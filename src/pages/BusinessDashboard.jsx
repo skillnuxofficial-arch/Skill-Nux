@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import BackgroundVideo from '../components/BackgroundVideo';
 
 const allSkills = [
   'SEO & SEM', 'Social Media Management', 'Content Writing', 'Email Marketing', 'YouTube & Blog', 'Paid Ads',
@@ -260,8 +261,15 @@ export default function BusinessDashboard() {
   const totalSpent = myProjects.reduce((acc, p) => acc + (p.budget || 0), 0);
   const completedGigs = myProjects.filter(p => p.status === 'done').length;
 
+  const getActiveSkill = () => {
+    if (activeTab === 'matching' && searchSkill) return searchSkill;
+    if (activeTab === 'post' && selectedSkillForPost) return selectedSkillForPost;
+    return 'Marketing';
+  };
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', width: '100%' }}>
+      <BackgroundVideo skill={getActiveSkill()} />
       
       {/* Mobile Hamburger Button */}
       <button className="hamburger-btn" id="hamBtn" onClick={() => setSidebarOpen(!sidebarOpen)}>

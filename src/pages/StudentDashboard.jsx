@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import BackgroundVideo from '../components/BackgroundVideo';
 
 export default function StudentDashboard() {
   const navigate = useNavigate();
@@ -262,6 +263,7 @@ export default function StudentDashboard() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', width: '100%' }}>
+      <BackgroundVideo skill={user.skill} />
       
       {/* Mobile Hamburger Button */}
       <button className="hamburger-btn" id="hamBtn" onClick={() => setSidebarOpen(!sidebarOpen)}>

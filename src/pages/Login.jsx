@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import BackgroundVideo from '../components/BackgroundVideo';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -75,6 +76,7 @@ export default function Login() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <BackgroundVideo skill={activeTab === 'student' ? 'AI' : 'Marketing'} />
       {/* Navigation */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0 }}>
         <Link className="logo" to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
