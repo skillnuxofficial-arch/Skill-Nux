@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SkillNux — Business Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root{--cyan:#00C9C8;--purple:#7C3AED;--purple2:#9F67FF;--orange:#FF6B35;--dark:#0B0D1A;--card-dark:#12152A;--text-dark:#E8EAF6;--muted-dark:#8892B0;--white:#fff;--border-dark:rgba(0,201,200,0.15);--success:#22c55e;--error:#ef4444;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text-dark);min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:rgba(11,13,26,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-dark)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-c{width:38px;height:38px;border-radius:50%;border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;background:linear-gradient(135deg,rgba(0,201,200,0.2),rgba(124,58,237,0.2))}
+.logo-c span{background:linear-gradient(135deg,var(--cyan),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-n{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--white)}
+.logo-n em{font-style:normal;color:var(--cyan)}
+.back-btn{padding:8px 18px;border-radius:8px;border:1.5px solid var(--border-dark);color:var(--muted-dark);font-size:13px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all .2s}
+.back-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+main{padding:100px 6% 60px;max-width:680px;margin:0 auto}
+.card{background:var(--card-dark);border:1px solid var(--border-dark);border-radius:20px;padding:36px 32px}
+.card-title{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--white);margin-bottom:8px}
+.card-sub{font-size:14px;color:var(--muted-dark);margin-bottom:28px;line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+label{font-size:13px;font-weight:600;color:var(--muted-dark);text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{padding:12px 16px;border-radius:10px;border:1.5px solid var(--border-dark);background:rgba(255,255,255,0.04);color:var(--white);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:all .2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
+input::placeholder,textarea::placeholder{color:var(--muted-dark)}
+select option{background:var(--card-dark);color:var(--white)}
+.form-hint{font-size:11px;color:var(--muted-dark);margin-top:2px}
+.optional-tag{font-size:10px;color:var(--muted-dark);font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px}
+.divider{grid-column:1/-1;height:1px;background:var(--border-dark);margin:8px 0}
+.section-title{grid-column:1/-1;font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--cyan);margin-top:8px}
+.btn-primary{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--orange),var(--purple));color:var(--white);font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;margin-top:24px;display:block}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,0.4)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.alert{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;display:none}
+.alert.show{display:block}
+.alert-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444}
+.alert-success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22c55e}
+.loading{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+.trust-badge{display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(0,201,200,0.06);border:1px solid rgba(0,201,200,0.15);border-radius:12px;margin-bottom:24px;font-size:13px;color:var(--muted-dark)}
+.trust-badge span{font-size:20px}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-c"><span>SN</span></div>
+    <span class="logo-n">Skill<em>Nux</em></span>
+  </a>
+  <a class="back-btn" href="index.html">← Back to Home</a>
+</nav>
+
+<main>
+  <div class="card" id="formCard">
+    <div class="card-title">🏢 Register Your Business</div>
+    <div class="card-sub">Join SkillNux and get access to verified, skilled students ready to work for you. Pay only when satisfied.</div>
+
+    <div class="trust-badge">
+      <span>🔒</span>
+      <div>Your information is secure. We verify all businesses before activation.</div>
+    </div>
+
+    <div class="alert alert-error" id="errMsg"></div>
+
+    <div class="form-grid">
+      <!-- Business Info -->
+      <div class="section-title">📋 Business Information</div>
+
+      <div class="form-group full">
+        <label>Business / Brand Name *</label>
+        <input type="text" id="business_name" placeholder="e.g. Sharma Enterprises, TechCo India"/>
+      </div>
+
+      <div class="form-group full">
+        <label>Owner / Contact Person Name *</label>
+        <input type="text" id="owner_name" placeholder="Your full name"/>
+      </div>
+
+      <div class="form-group">
+        <label>Business Email *</label>
+        <input type="email" id="email" placeholder="business@gmail.com"/>
+      </div>
+
+      <div class="form-group">
+        <label>WhatsApp Number *</label>
+        <input type="tel" id="phone" placeholder="+91 98765 43210"/>
+        <div class="form-hint">📱 Project updates will be sent here</div>
+      </div>
+
+      <div class="form-group">
+        <label>Business Type *</label>
+        <select id="business_type">
+          <option value="">Select Type</option>
+          <option>D2C Brand</option>
+          <option>Local Shop / Store</option>
+          <option>Startup</option>
+          <option>Agency</option>
+          <option>Freelancer / Solopreneur</option>
+          <option>Restaurant / Food Business</option>
+          <option>Education / Coaching</option>
+          <option>Healthcare / Clinic</option>
+          <option>E-commerce Store</option>
+          <option>Real Estate</option>
+          <option>Manufacturing</option>
+          <option>Service Business</option>
+          <option>NGO / Non-profit</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>City *</label>
+        <input type="text" id="city" placeholder="e.g. Mumbai, Delhi, Pune"/>
+      </div>
+
+      <div class="form-group">
+        <label>GST Number <span class="optional-tag">(Optional)</span></label>
+        <input type="text" id="gst" placeholder="22AAAAA0000A1Z5"/>
+        <div class="form-hint">Required for tax invoice</div>
+      </div>
+
+      <div class="form-group">
+        <label>Website / Social Link <span class="optional-tag">(Optional)</span></label>
+        <input type="text" id="website" placeholder="instagram.com/yourbrand"/>
+      </div>
+
+      <!-- Work Info -->
+      <div class="divider"></div>
+      <div class="section-title">💼 Work Requirements</div>
+
+      <div class="form-group full">
+        <label>What kind of work do you need? *</label>
+        <select id="work_needed">
+          <option value="">Select Category</option>
+          <option>Digital Marketing (SEO, Social Media, Ads)</option>
+          <option>Design & Creative (Logo, UI/UX, Video)</option>
+          <option>Tech & Development (Website, App, Automation)</option>
+          <option>Business & Finance (Research, Excel, PPT)</option>
+          <option>AI & Automation (ChatGPT, AI Tools)</option>
+          <option>Content Writing (Hindi, English, Regional)</option>
+          <option>Multiple Services</option>
+          <option>Not Sure Yet</option>
+        </select>
+      </div>
+
+      <!-- Account -->
+      <div class="divider"></div>
+      <div class="section-title">🔐 Create Your Account</div>
+
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" id="password" placeholder="Min 8 characters"/>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password *</label>
+        <input type="password" id="confirm_password" placeholder="Re-enter password"/>
+      </div>
+
+      <div class="form-group full">
+        <div class="form-hint" style="font-size:12px;color:var(--muted-dark);line-height:1.6">
+          ✅ By registering, you agree to our Terms & Conditions and Privacy Policy. Your account will be reviewed and activated within 24 hours.
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="registerBtn">🚀 Register My Business</button>
+  </div>
+
+  <!-- Success -->
+  <div class="card hidden" id="successCard" style="text-align:center;padding:48px 32px">
+    <div style="font-size:64px;margin-bottom:20px">🎉</div>
+    <div class="card-title" style="margin-bottom:12px">Business Registered!</div>
+    <p style="color:var(--muted-dark);font-size:15px;line-height:1.7;margin-bottom:28px">
+      Welcome to SkillNux! Your business account has been created successfully.<br><br>
+      Our team will verify your details and activate your account within <strong style="color:var(--cyan)">24 hours</strong>. You will receive a WhatsApp confirmation.
+    </p>
+    <div style="background:rgba(0,201,200,0.08);border:1px solid rgba(0,201,200,0.2);border-radius:12px;padding:16px;margin-bottom:24px;font-size:13px;color:var(--muted-dark)">
+      📱 Keep an eye on your WhatsApp — we'll notify you once your account is active!
+    </div>
+    <a href="index.html" style="display:block;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--purple));color:white;text-decoration:none;font-weight:600;text-align:center">← Back to Home</a>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+var SURL = 'https://mzcbakrhhwdfkhvptmer.supabase.co';
+var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16Y2Jha3JoaHdkZmtodnB0bWVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNzQzMzksImV4cCI6MjA5NDY1MDMzOX0.Opec2RvWcWorsIBDyo1MDSaeAgDf29J6X5pEeKXub68';
+var sb = supabase.createClient(SURL, SKEY);
+
+document.getElementById('registerBtn').onclick = async function() {
+  var business_name = document.getElementById('business_name').value.trim();
+  var owner_name = document.getElementById('owner_name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var phone = document.getElementById('phone').value.trim();
+  var business_type = document.getElementById('business_type').value;
+  var city = document.getElementById('city').value.trim();
+  var gst = document.getElementById('gst').value.trim();
+  var website = document.getElementById('website').value.trim();
+  var work_needed = document.getElementById('work_needed').value;
+  var password = document.getElementById('password').value;
+  var confirm_password = document.getElementById('confirm_password').value;
+  var err = document.getElementById('errMsg');
+
+  // Validation
+  if(!business_name||!owner_name||!email||!phone||!business_type||!city||!work_needed||!password||!confirm_password) {
+    err.textContent = '⚠️ Please fill all required fields!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+  if(!email.includes('@')) {
+    err.textContent = '⚠️ Please enter a valid email!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+  if(phone.length < 10) {
+    err.textContent = '⚠️ Please enter a valid phone number!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+  if(password.length < 8) {
+    err.textContent = '⚠️ Password must be at least 8 characters!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+  if(password !== confirm_password) {
+    err.textContent = '⚠️ Passwords do not match!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+
+  var btn = document.getElementById('registerBtn');
+  btn.innerHTML = '<span class="loading"></span> Registering your business...';
+  btn.disabled = true;
+
+  var data = {
+    business_name: business_name,
+    owner_name: owner_name,
+    email: email,
+    phone: phone,
+    business_type: business_type,
+    city: city,
+    gst: gst || null,
+    website: website || null,
+    work_needed: work_needed,
+    password: password
+  };
+
+  try {
+    var res = await sb.from('businesses').insert([data]);
+    if(res.error) {
+      err.textContent = res.error.message.includes('duplicate') ? '⚠️ This email is already registered!' : '⚠️ ' + res.error.message;
+      err.classList.add('show');
+      btn.innerHTML = '🚀 Register My Business';
+      btn.disabled = false;
+      return;
+    }
+    document.getElementById('formCard').classList.add('hidden');
+    document.getElementById('successCard').classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e) {
+    err.textContent = '⚠️ Something went wrong. Please try again!';
+    err.classList.add('show');
+    btn.innerHTML = '🚀 Register My Business';
+    btn.disabled = false;
+  }
+};
+</script>
+</body>
+</html>

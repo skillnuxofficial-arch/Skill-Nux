@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SkillNux — Business Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root{--cyan:#00C9C8;--purple:#7C3AED;--purple2:#9F67FF;--orange:#FF6B35;--pink:#FF2D78;--green:#22c55e;--dark:#0B0D1A;--darker:#070910;--card:#12152A;--card2:#1a1d35;--text:#E8EAF6;--muted:#8892B0;--white:#fff;--border:rgba(0,201,200,0.12);--border2:rgba(124,58,237,0.15);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;display:flex}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:4px}
+.sidebar{width:240px;min-height:100vh;background:var(--darker);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:100;transition:all .3s}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-c{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(255,107,53,0.3));border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px}
+.logo-c span{background:linear-gradient(135deg,var(--orange),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-n{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white)}
+.logo-n em{font-style:normal;color:var(--orange)}
+.biz-tag{display:inline-block;padding:2px 8px;border-radius:4px;background:rgba(255,107,53,0.15);border:1px solid rgba(255,107,53,0.3);color:var(--orange);font-size:10px;font-weight:700;margin-left:4px}
+.user-info{padding:20px;border-bottom:1px solid var(--border)}
+.user-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--white);margin-bottom:10px}
+.user-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white);margin-bottom:2px}
+.user-type{font-size:12px;color:var(--orange)}
+.user-city{font-size:11px;color:var(--muted);margin-top:3px}
+.sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;transition:all .2s;color:var(--muted);font-size:14px;font-weight:500;text-decoration:none;border:none;background:transparent;width:100%;text-align:left}
+.nav-item:hover{background:rgba(255,107,53,0.06);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(255,107,53,0.12),rgba(124,58,237,0.12));color:var(--white);border:1px solid rgba(255,107,53,0.2)}
+.nav-icon{font-size:18px;width:24px;text-align:center}
+.nav-section{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:12px 14px 6px}
+.sidebar-bottom{padding:16px 12px;border-top:1px solid var(--border)}
+.main{flex:1;margin-left:240px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{padding:16px 28px;background:rgba(7,9,16,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-left h2{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;color:var(--white)}
+.topbar-left p{font-size:13px;color:var(--muted);margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.notif-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;position:relative}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid var(--darker)}
+.content{padding:28px;flex:1}
+.section-page{display:none}
+.section-page.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:transform .3s}
+.stat-card:hover{transform:translateY(-4px)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card:nth-child(1)::before{background:linear-gradient(90deg,var(--orange),var(--purple))}
+.stat-card:nth-child(2)::before{background:linear-gradient(90deg,var(--cyan),var(--green))}
+.stat-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+.stat-card:nth-child(4)::before{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.stat-icon{font-size:28px;margin-bottom:12px}
+.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:var(--white);margin-bottom:4px}
+.stat-label{font-size:12px;color:var(--muted)}
+.dash-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.section-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:var(--white)}
+.btn-primary{padding:10px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--orange),var(--purple));color:var(--white);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,53,0.3)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-ghost{padding:10px 20px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-sm{padding:6px 14px;font-size:12px;border-radius:8px}
+.proj-item{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:background .2s}
+.proj-item:hover{background:rgba(255,107,53,0.04)}
+.proj-item:last-child{border-bottom:none}
+.proj-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{font-size:12px;color:var(--muted)}
+.proj-status{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600}
+.s-open{background:rgba(0,201,200,0.12);color:var(--cyan)}
+.s-active{background:rgba(34,197,94,0.12);color:var(--green)}
+.s-done{background:rgba(124,58,237,0.12);color:var(--purple2)}
+.s-review{background:rgba(245,158,11,0.12);color:#F59E0B}
+
+/* STUDENT CARDS for matching */
+.student-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:20px}
+.student-card{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .3s}
+.student-card:hover{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 12px 32px rgba(0,201,200,0.1)}
+.sc-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sc-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--white);flex-shrink:0}
+.sc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--white)}
+.sc-college{font-size:11px;color:var(--muted);margin-top:2px}
+.sc-skill{display:inline-block;padding:4px 12px;border-radius:50px;background:rgba(0,201,200,0.1);border:1px solid rgba(0,201,200,0.2);color:var(--cyan);font-size:12px;font-weight:600;margin-bottom:12px}
+.sc-stats{display:flex;gap:12px;margin-bottom:14px}
+.sc-stat{text-align:center;flex:1;background:var(--card);border-radius:8px;padding:8px}
+.sc-stat-val{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--white)}
+.sc-stat-lab{font-size:10px;color:var(--muted);margin-top:2px}
+.sc-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600;margin-bottom:12px}
+.badge-expert{background:rgba(255,215,0,0.12);color:#FFD700;border:1px solid rgba(255,215,0,0.3)}
+.badge-adv{background:rgba(0,201,200,0.12);color:var(--cyan);border:1px solid rgba(0,201,200,0.3)}
+.badge-beg{background:rgba(255,107,53,0.12);color:var(--orange);border:1px solid rgba(255,107,53,0.3)}
+.sc-actions{display:flex;gap:8px}
+.fav-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0}
+.fav-btn:hover{border-color:var(--pink);background:rgba(255,45,120,0.1)}
+.fav-btn.faved{border-color:var(--pink);background:rgba(255,45,120,0.1);color:var(--pink)}
+
+/* FAV STUDENTS */
+.fav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);transition:background .2s}
+.fav-item:hover{background:rgba(255,45,120,0.04)}
+.fav-item:last-child{border-bottom:none}
+.fav-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--white);flex-shrink:0}
+.fav-info{flex:1}
+.fav-name{font-size:14px;font-weight:600;color:var(--text)}
+.fav-skill{font-size:12px;color:var(--muted)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--white);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer}
+.modal-close:hover{color:var(--white)}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{padding:12px 16px;border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,0.04);color:var(--white);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:all .2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--orange)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+select option{background:var(--card);color:var(--white)}
+textarea{resize:vertical;min-height:80px}
+.alert{padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;display:none}
+.alert.show{display:block}
+.alert-success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--green)}
+.alert-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444}
+.loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skill-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.skill-chip{padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.skill-chip:hover{border-color:var(--orange);color:var(--orange)}
+.skill-chip.selected{background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(124,58,237,0.15));border-color:var(--orange);color:var(--white);font-weight:600}
+.hamburger{display:none;position:fixed;top:16px;left:16px;z-index:200;width:40px;height:40px;border-radius:10px;background:var(--card);border:1px solid var(--border);align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:16px}
+.empty-title{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px}
+.empty-sub{font-size:14px;line-height:1.6}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:flex}.stats-grid{grid-template-columns:1fr 1fr}.dash-grid{grid-template-columns:1fr}.content{padding:16px}.topbar{padding:12px 16px;padding-left:64px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.stat-card{animation:fadeUp .5s ease both}
+.stat-card:nth-child(1){animation-delay:.05s}.stat-card:nth-child(2){animation-delay:.1s}.stat-card:nth-child(3){animation-delay:.15s}.stat-card:nth-child(4){animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<div class="hamburger" id="hamBtn" onclick="toggleSidebar()">☰</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-c"><span>SN</span></div>
+    <div>
+      <span class="logo-n">Skill<em>Nux</em></span>
+      <span class="biz-tag">BIZ</span>
+    </div>
+  </div>
+  <div class="user-info">
+    <div class="user-avatar" id="bizAv">?</div>
+    <div class="user-name" id="bizName">Loading...</div>
+    <div class="user-type" id="bizType">—</div>
+    <div class="user-city" id="bizCity">—</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')"><span class="nav-icon">🏠</span> Dashboard</button>
+    <button class="nav-item" id="nav-post" onclick="showPage('post')"><span class="nav-icon">📝</span> Post a Project</button>
+    <button class="nav-item" id="nav-projects" onclick="showPage('projects')"><span class="nav-icon">📋</span> My Projects</button>
+    <button class="nav-item" id="nav-matching" onclick="showPage('matching')"><span class="nav-icon">🎯</span> Find Talent</button>
+    <div class="nav-section">Management</div>
+    <button class="nav-item" id="nav-favourites" onclick="showPage('favourites')"><span class="nav-icon">❤️</span> Favourites</button>
+    <button class="nav-item" id="nav-settings" onclick="showPage('settings')"><span class="nav-icon">⚙️</span> Settings</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="nav-item" style="color:#FF2D78;width:100%" onclick="logout()"><span class="nav-icon">🚪</span> Logout</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h2 id="pageTitle">Dashboard</h2>
+      <p id="pageSubtitle">Welcome back! 👋</p>
+    </div>
+    <div class="topbar-right">
+      <div class="notif-btn" onclick="alert('No new notifications')">🔔<div class="notif-dot"></div></div>
+      <button class="btn-primary btn-sm" onclick="showPage('post')">+ Post Project</button>
+      <button class="btn-ghost btn-sm" onclick="window.location.href='index.html'">← Home</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section-page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Projects</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statDone">0</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="statSpent">₹0</div><div class="stat-label">Total Spent</div></div>
+        <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value" id="statFavs">0</div><div class="stat-label">Favourites</div></div>
+      </div>
+      <div class="dash-grid">
+        <div>
+          <div class="section-card">
+            <div class="section-head">
+              <div class="section-title">📋 Recent Projects</div>
+              <button class="btn-ghost btn-sm" onclick="showPage('projects')">See All →</button>
+            </div>
+            <div id="recentProjects">
+              <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <div class="empty-title">No projects yet</div>
+                <div class="empty-sub">Post your first project and get matched with skilled students!</div>
+                <br>
+                <button class="btn-primary" onclick="showPage('post')">+ Post a Project</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-card">
+            <div class="section-head"><div class="section-title">❤️ Favourite Students</div><button class="btn-ghost btn-sm" onclick="showPage('favourites')">All →</button></div>
+            <div id="dashFavs">
+              <div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No favourites yet.<br>Find talent and save your best matches!</div>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top:20px">
+            <div class="section-head"><div class="section-title">🎯 Quick Actions</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+              <button class="btn-primary" style="width:100%" onclick="showPage('post')">📝 Post a New Project</button>
+              <button class="btn-ghost" style="width:100%" onclick="showPage('matching')">🎯 Find Talent by Skill</button>
+              <button class="btn-ghost" style="width:100%" onclick="showPage('favourites')">❤️ View Favourites</button>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top:20px">
+            <div class="section-head"><div class="section-title">💡 How It Works</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--purple));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
+                <div><div style="font-size:13px;font-weight:600;color:var(--text)">Post a Project</div><div style="font-size:12px;color:var(--muted)">Describe what you need</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
+                <div><div style="font-size:13px;font-weight:600;color:var(--text)">Get Matched</div><div style="font-size:12px;color:var(--muted)">Best students shown to you</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
+                <div><div style="font-size:13px;font-weight:600;color:var(--text)">Pay & Get Results</div><div style="font-size:12px;color:var(--muted)">Secure escrow payment</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST PROJECT -->
+    <div class="section-page" id="page-post">
+      <div class="section-card" style="max-width:600px">
+        <div class="section-head"><div class="section-title">📝 Post a New Project</div></div>
+        <div style="padding:24px">
+          <div class="alert alert-success" id="postSucc"></div>
+          <div class="alert alert-error" id="postErr"></div>
+          <div class="form-group">
+            <label>Project Title *</label>
+            <input type="text" id="proj_title" placeholder="e.g. Design a logo for my brand"/>
+          </div>
+          <div class="form-group">
+            <label>Skill Needed *</label>
+            <div class="skill-chips" id="skillChips"></div>
+          </div>
+          <div class="form-group">
+            <label>Budget (₹) *</label>
+            <select id="proj_budget">
+              <option value="">Select Budget</option>
+              <option value="500-1000">₹500 - ₹1,000</option>
+              <option value="1000-2500">₹1,000 - ₹2,500</option>
+              <option value="2500-5000">₹2,500 - ₹5,000</option>
+              <option value="5000-10000">₹5,000 - ₹10,000</option>
+              <option value="10000+">₹10,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Project Description *</label>
+            <textarea id="proj_desc" placeholder="Describe what you need in detail. Include any specific requirements, style preferences, or examples..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Deadline</label>
+            <select id="proj_deadline">
+              <option value="urgent">Urgent (1-2 days)</option>
+              <option value="week" selected>This week (3-7 days)</option>
+              <option value="2weeks">2 weeks</option>
+              <option value="month">1 month</option>
+              <option value="flexible">Flexible</option>
+            </select>
+          </div>
+          <button class="btn-primary" style="width:100%" id="postBtn" onclick="postProject()">🚀 Post Project & Find Students</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY PROJECTS -->
+    <div class="section-page" id="page-projects">
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-title">📋 All My Projects</div>
+          <button class="btn-primary btn-sm" onclick="showPage('post')">+ New</button>
+        </div>
+        <div id="allProjects">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">No projects yet</div>
+            <div class="empty-sub">Post your first project to get started!</div>
+            <br>
+            <button class="btn-primary" onclick="showPage('post')">+ Post a Project</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIND TALENT / MATCHING -->
+    <div class="section-page" id="page-matching">
+      <div class="section-card" style="margin-bottom:20px">
+        <div class="section-head"><div class="section-title">🎯 Find Talent by Skill</div></div>
+        <div style="padding:20px">
+          <div class="form-group">
+            <label>Select Skill to Search</label>
+            <select id="matchSkill" onchange="findStudents()">
+              <option value="">-- Select a Skill --</option>
+              <option>SEO & SEM</option><option>Social Media Management</option><option>Content Writing</option>
+              <option>Email Marketing</option><option>YouTube & Blog</option><option>Paid Ads</option>
+              <option>WhatsApp Marketing</option><option>Influencer Outreach</option><option>Online Reputation</option>
+              <option>Logo & Brand Design</option><option>UI/UX Design</option><option>Video Editing</option>
+              <option>Thumbnail Design</option><option>Poster & Flyer</option><option>Motion Graphics</option>
+              <option>Reels Editing</option><option>Product Photography</option><option>Packaging Design</option>
+              <option>Pitch Deck Design</option><option>Canva Design</option>
+              <option>Web Development</option><option>No-Code Automation</option><option>Database Management</option>
+              <option>API Integration</option><option>Landing Pages</option><option>Shopify Setup</option>
+              <option>WordPress</option><option>App UI Design</option><option>Chatbot Setup</option>
+              <option>Market Research</option><option>Data Entry & Analysis</option><option>Excel & Google Sheets</option>
+              <option>Presentations PPT</option><option>Business Writing</option><option>Customer Support</option>
+              <option>Amazon Flipkart Listing</option><option>Hindi Content Writing</option><option>Regional Language Content</option>
+              <option>ChatGPT Prompting</option><option>AI Image Generation</option><option>AI Video Creation</option>
+              <option>Notion Zapier Automation</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="matchResults">
+        <div class="empty-state">
+          <div class="empty-icon">🎯</div>
+          <div class="empty-title">Select a skill above</div>
+          <div class="empty-sub">We'll show you the best verified students for that skill!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAVOURITES -->
+    <div class="section-page" id="page-favourites">
+      <div class="section-card">
+        <div class="section-head"><div class="section-title">❤️ Favourite Students</div></div>
+        <div id="favsList">
+          <div class="empty-state">
+            <div class="empty-icon">❤️</div>
+            <div class="empty-title">No favourites yet</div>
+            <div class="empty-sub">Find talent and click ❤️ to save your best matches here!</div>
+            <br>
+            <button class="btn-primary" onclick="showPage('matching')">🎯 Find Talent</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section-page" id="page-settings">
+      <div class="section-card" style="max-width:500px">
+        <div class="section-head"><div class="section-title">⚙️ Business Settings</div></div>
+        <div style="padding:20px">
+          <div class="alert alert-success" id="settSucc"></div>
+          <div class="form-group"><label>Business Name</label><input type="text" id="sett_name" placeholder="Your business name"/></div>
+          <div class="form-group"><label>Owner Name</label><input type="text" id="sett_owner" placeholder="Your name"/></div>
+          <div class="form-group"><label>WhatsApp Number</label><input type="tel" id="sett_phone" placeholder="+91 98765 43210"/></div>
+          <div class="form-group"><label>City</label><input type="text" id="sett_city" placeholder="Mumbai"/></div>
+          <div class="form-group"><label>Website / Social Link</label><input type="text" id="sett_website" placeholder="instagram.com/yourbrand"/></div>
+          <button class="btn-primary" style="width:100%" onclick="saveSettings()">💾 Save Changes</button>
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+            <button class="btn-ghost" style="width:100%;color:var(--pink);border-color:rgba(255,45,120,0.3);margin-top:0" onclick="logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+var SURL='https://mzcbakrhhwdfkhvptmer.supabase.co';
+var SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16Y2Jha3JoaHdkZmtodnB0bWVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNzQzMzksImV4cCI6MjA5NDY1MDMzOX0.Opec2RvWcWorsIBDyo1MDSaeAgDf29J6X5pEeKXub68';
+var sb=supabase.createClient(SURL,SKEY);
+
+var user=null;
+try{user=JSON.parse(localStorage.getItem('skillnux_user'));}catch(e){}
+if(!user||user.type!=='business'){window.location.href='login.html';}
+
+var myProjects=[];
+var favourites=[];
+var selectedSkillForPost='';
+
+var allSkills=['SEO & SEM','Social Media Management','Content Writing','Email Marketing','YouTube & Blog','Paid Ads','WhatsApp Marketing','Influencer Outreach','Online Reputation','Logo & Brand Design','UI/UX Design','Video Editing','Thumbnail Design','Poster & Flyer','Motion Graphics','Reels Editing','Product Photography','Packaging Design','Pitch Deck Design','Canva Design','Web Development','No-Code Automation','Database Management','API Integration','Landing Pages','Shopify Setup','WordPress','App UI Design','Chatbot Setup','Market Research','Data Entry & Analysis','Excel & Google Sheets','Presentations PPT','Business Writing','Customer Support','Amazon Flipkart Listing','Hindi Content Writing','Regional Language Content','ChatGPT Prompting','AI Image Generation','AI Video Creation','Notion Zapier Automation'];
+
+function getInitials(name){
+  if(!name)return'?';
+  return name.split(' ').map(function(n){return n[0];}).join('').toUpperCase().substr(0,2);
+}
+
+function populateUI(){
+  if(!user)return;
+  var ini=getInitials(user.business_name||user.owner_name);
+  document.getElementById('bizAv').textContent=ini;
+  document.getElementById('bizName').textContent=user.business_name||'Business';
+  document.getElementById('bizType').textContent=user.business_type||'Business';
+  document.getElementById('bizCity').textContent='📍 '+(user.city||'—');
+  document.getElementById('pageSubtitle').textContent='Welcome, '+(user.business_name||'Business')+'! 👋';
+
+  // Settings prefill
+  document.getElementById('sett_name').value=user.business_name||'';
+  document.getElementById('sett_owner').value=user.owner_name||'';
+  document.getElementById('sett_phone').value=user.phone||'';
+  document.getElementById('sett_city').value=user.city||'';
+  document.getElementById('sett_website').value=user.website||'';
+
+  // Load data
+  try{myProjects=JSON.parse(localStorage.getItem('projects_'+user.email))||[];}catch(e){myProjects=[];}
+  try{favourites=JSON.parse(localStorage.getItem('favs_'+user.email))||[];}catch(e){favourites=[];}
+
+  updateStats();
+  renderProjects();
+  renderFavourites();
+  buildSkillChips();
+}
+
+function buildSkillChips(){
+  var html=allSkills.map(function(s){
+    return '<button class="skill-chip" onclick="selectSkillForPost(this,\''+s.replace(/'/g,"\\'")+'\')">' + s + '</button>';
+  }).join('');
+  document.getElementById('skillChips').innerHTML=html;
+}
+
+function selectSkillForPost(btn,skill){
+  document.querySelectorAll('.skill-chip').forEach(function(c){c.classList.remove('selected');});
+  btn.classList.add('selected');
+  selectedSkillForPost=skill;
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent=myProjects.length;
+  var done=myProjects.filter(function(p){return p.status==='done';}).length;
+  document.getElementById('statDone').textContent=done;
+  var spent=myProjects.reduce(function(a,p){return a+(parseInt(p.budget_min)||0);},0);
+  document.getElementById('statSpent').textContent='₹'+spent;
+  document.getElementById('statFavs').textContent=favourites.length;
+}
+
+function renderProjects(){
+  var html=myProjects.map(function(p,i){
+    var icons={'Design':'🎨','Marketing':'📣','Development':'💻','Writing':'✍️','AI':'🤖','Other':'📋'};
+    var icon=icons[p.category]||'📋';
+    var statusClass={'open':'s-open','active':'s-active','done':'s-done','review':'s-review'}[p.status]||'s-open';
+    var statusText={'open':'Open','active':'Active','done':'Done','review':'In Review'}[p.status]||'Open';
+    return '<div class="proj-item"><div class="proj-icon" style="background:rgba(255,107,53,0.12)">'+icon+'</div><div class="proj-info"><div class="proj-name">'+p.title+'</div><div class="proj-meta">'+p.skill+' • ₹'+p.budget_min+'-'+p.budget_max+' • '+p.deadline+'</div></div><div style="text-align:right"><div class="proj-status '+statusClass+'">'+statusText+'</div><br><button onclick="deleteProject('+i+')" style="font-size:11px;color:var(--pink);background:none;border:none;cursor:pointer;margin-top:4px">Delete</button></div></div>';
+  }).join('');
+  if(!html)html='<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No projects yet</div><div class="empty-sub">Post your first project!</div><br><button class="btn-primary" onclick="showPage(\'post\')">+ Post a Project</button></div>';
+  document.getElementById('recentProjects').innerHTML=html;
+  document.getElementById('allProjects').innerHTML=html;
+}
+
+function deleteProject(i){
+  if(confirm('Delete this project?')){
+    myProjects.splice(i,1);
+    localStorage.setItem('projects_'+user.email,JSON.stringify(myProjects));
+    updateStats();renderProjects();
+  }
+}
+
+async function postProject(){
+  var title=document.getElementById('proj_title').value.trim();
+  var budget=document.getElementById('proj_budget').value;
+  var desc=document.getElementById('proj_desc').value.trim();
+  var deadline=document.getElementById('proj_deadline').value;
+  var err=document.getElementById('postErr');
+  var succ=document.getElementById('postSucc');
+
+  if(!title||!selectedSkillForPost||!budget||!desc){
+    err.textContent='⚠️ Please fill all required fields and select a skill!';
+    err.classList.add('show');
+    setTimeout(function(){err.classList.remove('show');},3000);
+    return;
+  }
+
+  var btn=document.getElementById('postBtn');
+  btn.innerHTML='<span class="loading"></span> Posting...';
+  btn.disabled=true;
+
+  var parts=budget.split('-');
+  var proj={
+    title:title, skill:selectedSkillForPost,
+    budget_min:parts[0]||'', budget_max:parts[1]||parts[0]||'',
+    description:desc, deadline:deadline,
+    status:'open', date:new Date().toLocaleDateString(),
+    category:getCategory(selectedSkillForPost)
+  };
+
+  // Save to Supabase
+  try{
+    await sb.from('projects').insert([{
+      title:title, skill:selectedSkillForPost,
+      budget:parseInt(parts[0])||0,
+      status:'open'
+    }]);
+  }catch(e){}
+
+  myProjects.unshift(proj);
+  localStorage.setItem('projects_'+user.email,JSON.stringify(myProjects));
+  updateStats();renderProjects();
+
+  succ.textContent='✅ Project posted! Finding best students...';
+  succ.classList.add('show');
+  btn.innerHTML='🚀 Post Project & Find Students';
+  btn.disabled=false;
+
+  setTimeout(function(){
+    succ.classList.remove('show');
+    document.getElementById('proj_title').value='';
+    document.getElementById('proj_desc').value='';
+    document.getElementById('proj_budget').value='';
+    document.querySelectorAll('.skill-chip').forEach(function(c){c.classList.remove('selected');});
+    selectedSkillForPost='';
+    // Go to matching with this skill pre-selected
+    document.getElementById('matchSkill').value=proj.skill;
+    showPage('matching');
+    findStudents();
+  },1500);
+}
+
+function getCategory(skill){
+  var cats={
+    'SEO & SEM':'Marketing','Social Media Management':'Marketing','Content Writing':'Marketing',
+    'Email Marketing':'Marketing','YouTube & Blog':'Marketing','Paid Ads':'Marketing',
+    'Logo & Brand Design':'Design','UI/UX Design':'Design','Video Editing':'Design',
+    'Thumbnail Design':'Design','Poster & Flyer':'Design','Motion Graphics':'Design',
+    'Web Development':'Development','No-Code Automation':'Development','Landing Pages':'Development',
+    'Shopify Setup':'Development','WordPress':'Development',
+    'ChatGPT Prompting':'AI','AI Image Generation':'AI','AI Video Creation':'AI'
+  };
+  return cats[skill]||'Other';
+}
+
+async function findStudents(){
+  var skill=document.getElementById('matchSkill').value;
+  if(!skill){document.getElementById('matchResults').innerHTML='<div class="empty-state"><div class="empty-icon">🎯</div><div class="empty-title">Select a skill</div></div>';return;}
+
+  document.getElementById('matchResults').innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-title">Searching students...</div></div>';
+
+  try{
+    var res=await sb.from('students').select('*').eq('skill',skill).order('score',{ascending:false});
+    if(res.error||!res.data||res.data.length===0){
+      document.getElementById('matchResults').innerHTML='<div class="empty-state"><div class="empty-icon">😕</div><div class="empty-title">No students found for this skill yet</div><div class="empty-sub">More students are joining every day! Try another skill or check back soon.</div></div>';
+      return;
+    }
+    var html='<div style="padding:12px 20px;font-size:13px;color:var(--muted)">Found <strong style="color:var(--cyan)">'+res.data.length+'</strong> student(s) for '+skill+'</div><div class="student-grid">';
+    res.data.forEach(function(s){
+      var ini=getInitials(s.name);
+      var isFav=favourites.some(function(f){return f.email===s.email;});
+      var badgeClass=s.badge&&s.badge.includes('Expert')?'badge-expert':s.badge&&s.badge.includes('Advanced')?'badge-adv':'badge-beg';
+      html+='<div class="student-card">';
+      html+='<div class="sc-header"><div class="sc-av">'+ini+'</div><div><div class="sc-name">'+s.name+'</div><div class="sc-college">'+(s.college||'—')+'</div></div></div>';
+      html+='<div class="sc-skill">'+s.skill+'</div>';
+      html+='<div class="sc-stats"><div class="sc-stat"><div class="sc-stat-val">'+(s.score||0)+'/5</div><div class="sc-stat-lab">Score</div></div><div class="sc-stat"><div class="sc-stat-val">'+(s.level||'Beginner')+'</div><div class="sc-stat-lab">Level</div></div></div>';
+      html+='<div class="sc-badge '+badgeClass+'">'+(s.badge||'📚 Beginner')+'</div>';
+      html+='<div class="sc-actions"><button class="btn-primary" style="flex:1;font-size:12px" onclick="hireStudent(\''+s.email+'\',\''+s.name+'\')">✅ Hire</button>';
+      html+='<button class="fav-btn '+(isFav?'faved':'')+'" onclick="toggleFav(this,\''+s.email+'\',\''+s.name+'\',\''+s.skill+'\')">'+(isFav?'❤️':'🤍')+'</button></div>';
+      html+='</div>';
+    });
+    html+='</div>';
+    document.getElementById('matchResults').innerHTML=html;
+  }catch(e){
+    document.getElementById('matchResults').innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error loading students</div></div>';
+  }
+}
+
+function hireStudent(email,name){
+  if(confirm('Hire '+name+' for this project?')){
+    alert('✅ Great! '+name+' has been contacted. They will receive a notification on WhatsApp!');
+  }
+}
+
+function toggleFav(btn,email,name,skill){
+  var idx=favourites.findIndex(function(f){return f.email===email;});
+  if(idx>-1){
+    favourites.splice(idx,1);
+    btn.textContent='🤍';
+    btn.classList.remove('faved');
+  }else{
+    favourites.push({email:email,name:name,skill:skill});
+    btn.textContent='❤️';
+    btn.classList.add('faved');
+  }
+  localStorage.setItem('favs_'+user.email,JSON.stringify(favourites));
+  updateStats();
+  renderFavourites();
+}
+
+function renderFavourites(){
+  var html=favourites.map(function(f,i){
+    return '<div class="fav-item"><div class="fav-av">'+getInitials(f.name)+'</div><div class="fav-info"><div class="fav-name">'+f.name+'</div><div class="fav-skill">'+f.skill+'</div></div><button class="btn-ghost btn-sm" onclick="removeFav('+i+')">Remove</button></div>';
+  }).join('');
+  if(!html)html='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No favourites yet!</div>';
+  document.getElementById('dashFavs').innerHTML=html;
+  document.getElementById('favsList').innerHTML=html||'<div class="empty-state"><div class="empty-icon">❤️</div><div class="empty-title">No favourites yet</div><button class="btn-primary" onclick="showPage(\'matching\')">🎯 Find Talent</button></div>';
+}
+
+function removeFav(i){
+  favourites.splice(i,1);
+  localStorage.setItem('favs_'+user.email,JSON.stringify(favourites));
+  updateStats();renderFavourites();
+}
+
+async function saveSettings(){
+  var name=document.getElementById('sett_name').value.trim();
+  var owner=document.getElementById('sett_owner').value.trim();
+  var phone=document.getElementById('sett_phone').value.trim();
+  var city=document.getElementById('sett_city').value.trim();
+  var website=document.getElementById('sett_website').value.trim();
+  try{
+    await sb.from('businesses').update({business_name:name,owner_name:owner,phone:phone,city:city,website:website}).eq('email',user.email);
+    user.business_name=name;user.owner_name=owner;user.phone=phone;user.city=city;user.website=website;
+    localStorage.setItem('skillnux_user',JSON.stringify(user));
+    populateUI();
+    document.getElementById('settSucc').textContent='✅ Settings saved!';
+    document.getElementById('settSucc').classList.add('show');
+    setTimeout(function(){document.getElementById('settSucc').classList.remove('show');},2000);
+  }catch(e){alert('Error saving settings!');}
+}
+
+function showPage(page){
+  document.querySelectorAll('.section-page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var navEl=document.getElementById('nav-'+page);
+  if(navEl)navEl.classList.add('active');
+  var titles={dashboard:'Dashboard',post:'Post a Project',projects:'My Projects',matching:'Find Talent',favourites:'Favourite Students',settings:'Settings'};
+  document.getElementById('pageTitle').textContent=titles[page]||'Dashboard';
+  if(window.innerWidth<=900)document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+function logout(){localStorage.removeItem('skillnux_user');window.location.href='index.html';}
+
+document.addEventListener('click',function(e){
+  var sidebar=document.getElementById('sidebar');
+  if(window.innerWidth<=900&&!sidebar.contains(e.target)&&!e.target.closest('#hamBtn'))sidebar.classList.remove('open');
+});
+
+populateUI();
+</script>
+</body>
+</html>
