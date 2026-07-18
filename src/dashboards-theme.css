@@ -1,0 +1,113 @@
+/* 
+  Minimalist Dark Theme
+  Applied exclusively to the Business and Student Portals 
+*/
+
+.frosted-cream-theme {
+  /* Minimal Dark Backgrounds */
+  --dark: #161616;
+  --darker: #161616;
+  --card-dark: #161616;
+  --card-dark2: #161616;
+  
+  /* Text & Borders */
+  --text-dark: #e1e1e1;
+  --text-light: #e1e1e1;
+  --muted-dark: #a1a1a1; /* Slightly muted for secondary text */
+  --border-dark: #e1e1e1;
+  --border: #e1e1e1;
+  
+  /* Button accents */
+  --cyan: #e1e1e1; 
+  
+  min-height: 100vh;
+  width: 100%;
+  color: var(--text-dark);
+  background: var(--dark);
+}
+
+/* Base Overrides */
+.frosted-cream-theme .sidebar,
+.frosted-cream-theme .topbar,
+.frosted-cream-theme .stat-card,
+.frosted-cream-theme .section-card,
+.frosted-cream-theme .project-item,
+.frosted-cream-theme .empty-state-card,
+.frosted-cream-theme .dash-grid > div > div {
+  background: #161616 !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+  color: #e1e1e1 !important;
+}
+
+/* Typography Overrides */
+.frosted-cream-theme h1, 
+.frosted-cream-theme h2, 
+.frosted-cream-theme h3, 
+.frosted-cream-theme h4,
+.frosted-cream-theme .stat-value,
+.frosted-cream-theme .section-title,
+.frosted-cream-theme .user-name {
+  color: #e1e1e1 !important;
+}
+
+.frosted-cream-theme p,
+.frosted-cream-theme .stat-label,
+.frosted-cream-theme .nav-label,
+.frosted-cream-theme .user-type,
+.frosted-cream-theme .user-city,
+.frosted-cream-theme .proj-meta {
+  color: #a1a1a1 !important;
+}
+
+/* Buttons */
+.frosted-cream-theme .btn-primary {
+  background: #e1e1e1 !important;
+  color: #161616 !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 800;
+}
+
+.frosted-cream-theme .btn-primary:hover {
+  background: #ffffff !important;
+  color: #161616 !important;
+}
+
+/* Form inputs & Selects */
+.frosted-cream-theme input,
+.frosted-cream-theme select,
+.frosted-cream-theme textarea {
+  background: #161616 !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #e1e1e1 !important;
+  box-shadow: none !important;
+}
+
+.frosted-cream-theme input:focus,
+.frosted-cream-theme select:focus,
+.frosted-cream-theme textarea:focus {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 1px #e1e1e1 !important;
+}
+
+/* Sidebar Specifics */
+.frosted-cream-theme .sidebar-nav .nav-item:hover,
+.frosted-cream-theme .sidebar-nav .nav-item.active {
+  background: #e1e1e1 !important;
+  color: #161616 !important;
+}
+
+.frosted-cream-theme .sidebar-nav .nav-item:hover .nav-icon,
+.frosted-cream-theme .sidebar-nav .nav-item.active .nav-icon {
+  filter: invert(1) !important;
+}
+
+/* Remove Background Video wash */
+.frosted-cream-theme .video-bg-wrap {
+  display: none !important; /* Hide video completely for minimal theme */
+}
+
+/* Hide global logo background removal hack inside light theme if it was affecting anything negatively, but wait, the global logo has mix-blend-mode: screen which removes black backgrounds, or inverts white ones. Actually the logo might need a different hack here. Let's let it be for now and see. */

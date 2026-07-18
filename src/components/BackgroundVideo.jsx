@@ -25,7 +25,7 @@ export default function BackgroundVideo({ skill }) {
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
-      <div className="video-bg-overlay"></div>
+      <div className="video-bg-overlay" style={{ background: 'rgba(250, 249, 246, 0.3)' }}></div>
     </div>
   );
 }

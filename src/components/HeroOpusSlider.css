@@ -1,0 +1,253 @@
+/* HeroOpusSlider.css */
+
+.opus-slider-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  background: #030712;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app__bgimg {
+  position: absolute;
+  top: 0;
+  left: -2.5%;
+  width: 105%;
+  height: 100%;
+  transition: transform 3.5s 770ms;
+}
+
+.app__bgimg-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.app__bgimg-image--1 {
+  /* Dynamic style applied in React */
+}
+
+.app__bgimg-image--2 {
+  opacity: 0;
+  transition: opacity 0ms 1300ms;
+  will-change: opacity;
+}
+
+/* Base overlay to dim the images so text is readable */
+.app__bgimg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.4);
+}
+
+.app__text {
+  position: absolute;
+  font-family: 'Inter', 'Outfit', sans-serif;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+/* Adjust positions relative to the hero section */
+.app__text--1 {
+  right: 10%;
+  top: 25%;
+}
+
+.app__text--2 {
+  right: initial;
+  top: 35%;
+  left: 10%;
+  z-index: -1;
+  transition: z-index 1500ms;
+}
+
+.app__text-line {
+  transition: transform 1500ms 400ms, opacity 750ms 500ms;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+.app__text-line--4 {
+  font-size: 50px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.app__text-line--3 {
+  font-size: 40px;
+  font-weight: 300;
+  color: #e2e8f0;
+}
+
+.app__text-line--2 {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cyan, #06b6d4);
+  letter-spacing: 2px;
+}
+
+.app__text-line--1 {
+  margin-top: 15px;
+}
+.app__text-line--1 img {
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Slide 1 - Initial State */
+.app__text--1 .app__text-line {
+  transform: translate3d(0, -125px, 0);
+  opacity: 0;
+}
+
+.app__text-line--1 { transition: transform 1500ms 2000ms, opacity 1500ms 2750ms; }
+.app__text-line--2 { transition: transform 1500ms 2100ms, opacity 1500ms 3000ms; }
+.app__text-line--3 { transition: transform 1500ms 2200ms, opacity 1500ms 3250ms; }
+.app__text-line--4 { transition: transform 1500ms 2300ms, opacity 1500ms 3500ms; }
+
+.app__text--2 .app__text-line--1 { opacity: 0; transition: transform 1500ms 300ms, opacity 400ms 500ms; }
+.app__text--2 .app__text-line--2 { opacity: 0; transition: transform 1500ms 375ms, opacity 400ms 575ms; }
+.app__text--2 .app__text-line--3 { opacity: 0; transition: transform 1500ms 450ms, opacity 400ms 650ms; }
+.app__text--2 .app__text-line--4 { opacity: 0; transition: transform 1500ms 525ms, opacity 400ms 725ms; }
+
+.app__img {
+  position: absolute;
+  transform: translate3d(0, -750px, 0);
+  width: 100%;
+  height: 100%;
+  transition: transform 3s cubic-bezier(0.6, 0.13, 0.31, 1.02);
+  will-change: transform;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.app__img img {
+  max-width: 80%;
+  max-height: 80vh;
+  object-fit: contain;
+  user-select: none;
+  opacity: 0.8;
+}
+
+/* .initial State */
+.initial .app__img {
+  transform: translate3d(0, 0, 0);
+}
+
+.initial .app__text--1 .app__text-line--1 { transform: translate3d(0, 0, 0); transition: transform 1500ms 1400ms, opacity 400ms 1600ms; opacity: 1; }
+.initial .app__text--1 .app__text-line--2 { transform: translate3d(0, 0, 0); transition: transform 1500ms 1475ms, opacity 400ms 1675ms; opacity: 1; }
+.initial .app__text--1 .app__text-line--3 { transform: translate3d(0, 0, 0); transition: transform 1500ms 1550ms, opacity 400ms 1750ms; opacity: 1; }
+.initial .app__text--1 .app__text-line--4 { transform: translate3d(0, 0, 0); transition: transform 1500ms 1625ms, opacity 400ms 1825ms; opacity: 1; }
+
+
+/* .active State */
+.active .app__bgimg {
+  transform: translate3d(10px, 0, 0) scale(1.05);
+  transition: transform 5s 850ms ease-in-out;
+}
+
+.active .app__bgimg .app__bgimg-image--2 {
+  opacity: 1;
+  transition: opacity 0ms 1500ms;
+}
+
+.active .app__img {
+  transition: transform 3s cubic-bezier(0.6, 0.13, 0.31, 1.02);
+  transform: translate3d(0, -1410px, 0);
+}
+
+.active .app__text--1 {
+  z-index: -1;
+  transition: z-index 0ms 1500ms;
+}
+
+.active .app__text--1 .app__text-line--1 { transform: translate3d(0, -125px, 0); transition: transform 1500ms 300ms, opacity 400ms 500ms; opacity: 0; }
+.active .app__text--1 .app__text-line--2 { transform: translate3d(0, -125px, 0); transition: transform 1500ms 375ms, opacity 400ms 575ms; opacity: 0; }
+.active .app__text--1 .app__text-line--3 { transform: translate3d(0, -125px, 0); transition: transform 1500ms 450ms, opacity 400ms 650ms; opacity: 0; }
+.active .app__text--1 .app__text-line--4 { transform: translate3d(0, -125px, 0); transition: transform 1500ms 525ms, opacity 400ms 725ms; opacity: 0; }
+
+
+.active .app__text--2 {
+  z-index: 1;
+}
+
+.active .app__text--2 .app__text-line--1 { transform: translate3d(0, -125px, 0); transition: transform 2500ms 1100ms, opacity 1300ms 1300ms; opacity: 1; }
+.active .app__text--2 .app__text-line--2 { transform: translate3d(0, -125px, 0); transition: transform 2500ms 1175ms, opacity 1300ms 1575ms; opacity: 1; }
+.active .app__text--2 .app__text-line--3 { transform: translate3d(0, -125px, 0); transition: transform 2500ms 1250ms, opacity 1300ms 1850ms; opacity: 1; }
+.active .app__text--2 .app__text-line--4 { transform: translate3d(0, -125px, 0); transition: transform 2500ms 1325ms, opacity 1300ms 2125ms; opacity: 1; }
+
+/* Pagination indicators */
+.pages {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.pages__list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pages__item {
+  position: relative;
+  margin-bottom: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.pages__item:hover {
+  border-color: #fff;
+}
+
+.pages__item::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 0;
+  transition: transform 300ms, opacity 300ms;
+}
+
+.pages__item:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.page__item-active {
+  border-color: var(--cyan, #06b6d4);
+}
+.page__item-active::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  background-color: var(--cyan, #06b6d4);
+}

@@ -1,5 +1,5 @@
 export function getVideoUrl(skill) {
-  if (!skill) return 'https://assets.mixkit.co/videos/preview/mixkit-particles-glowing-in-the-dark-42289-large.mp4';
+  if (!skill) return '/bg1.mp4';
   const sk = skill.toLowerCase();
   
   // Tech & Development
@@ -18,7 +18,7 @@ export function getVideoUrl(skill) {
     sk.includes('chatbot') ||
     sk.includes('program')
   ) {
-    return 'https://assets.mixkit.co/videos/preview/mixkit-futuristic-subway-station-with-neon-lights-43093-large.mp4';
+    return '/bg2.mp4';
   }
   
   // Design & Creative
@@ -41,7 +41,7 @@ export function getVideoUrl(skill) {
     sk.includes('canva') ||
     sk.includes('art')
   ) {
-    return 'https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-lines-loop-42861-large.mp4';
+    return '/bg3.mp4';
   }
   
   // Marketing & Sales
@@ -59,9 +59,9 @@ export function getVideoUrl(skill) {
     sk.includes('whatsapp') || 
     sk.includes('blog')
   ) {
-    return 'https://assets.mixkit.co/videos/preview/mixkit-cyber-security-system-hud-in-blue-and-pink-43105-large.mp4';
+    return '/bg4.mp4';
   }
   
   // Default (AI, Business, general)
-  return 'https://assets.mixkit.co/videos/preview/mixkit-particles-glowing-in-the-dark-42289-large.mp4';
+  return '/bg1.mp4';
 }
