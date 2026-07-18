@@ -1,16 +1,15 @@
-# React + Vite
+# SkillNux
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Platform Description
 
-Currently, two official plugins are available:
+Our platform is built to bridge the gap between talented students and small businesses.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Many students have exceptional skills, creativity, and potential, but they often struggle to find the right opportunities to showcase their talent because they lack professional experience. At the same time, many local businesses, startups, and small-scale companies need skilled individuals for various projects but cannot afford the high costs of hiring experienced professionals or agencies.
 
-## React Compiler
+Our platform connects these two groups by providing businesses with access to fresh, talented students who are eager to learn, grow, and contribute at an affordable cost. Students gain real-world work experience, earn income, build a strong portfolio, and receive verified certificates that enhance their CVs and improve their future career opportunities.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+By creating meaningful collaborations between students and businesses, we help students transform their skills into practical experience while enabling businesses to access quality talent within their budget. Our mission is to create a win-win ecosystem where businesses grow, students succeed, and opportunities become accessible to everyone, regardless of experience.
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This project uses React and Vite. For local development, install dependencies with npm install and start the dev server with npm run dev.
